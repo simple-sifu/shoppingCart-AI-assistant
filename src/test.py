@@ -12,11 +12,62 @@ import sys
 # sys.exit()
 
 
-# Stage 3
-from langchain_core.messages import HumanMessage, SystemMessage
-from src.nodes import product_subgraph, PRODUCT_PROMPT
-result = product_subgraph.invoke({'message': [
-    SystemMessage(content=PRODUCT_PROMPT),
-    HumanMessage(content='Show me headphones under 15000')]})
-print(result['messages'][-1].content)
+# # Stage 3
+# from langchain_core.messages import HumanMessage, SystemMessage
+# from src.nodes import product_subgraph, PRODUCT_PROMPT
+# result = product_subgraph.invoke({'messages': [
+#     SystemMessage(content=PRODUCT_PROMPT),
+#     HumanMessage(content='Show me headphones under 15000')]})
+# print(result['messages'][-1].content)
+# sys.exit()
+
+
+# Stage 4
+# from langchain_core.messages import HumanMessage, SystemMessage
+# from src.nodes import support_subgraph, SUPPORT_PROMPT
+# result = support_subgraph.invoke({'messages': [
+#     SystemMessage(content=SUPPORT_PROMPT),
+#     HumanMessage(content='Status of order ORD102?')]})
+# print(result['messages'][-1].content)
+# sys.exit()
+
+
+# Stage 5
+# from src.config import llm
+# from src.state import ClassificationResult
+# c = llm.with_structured_output(ClassificationResult)
+# r = c.invoke('Classify: My order ORD102 is late show me alternatives')
+# print('Mixed:', [t.agent for t in r.tasks], 'synthesis:', r.requires_synthesis)
+# sys.exit()
+
+
+# # Stage 6
+# from langchain_core.messages import HumanMessage
+# from src.graph import axiomcart_graph
+# result = axiomcart_graph.invoke(
+#     {'messages': [HumanMessage(content='ORD102 is late, show me headphones')],
+#     'user_query': 'ORD102 is late, show me headphones'},
+#     {'configurable': {'thread_id': 'test-006'}})
+# print(result['final_answer'])
+# sys.exit()
+
+
+# Stage 7
+from langchain_core.messages import HumanMessage
+from langchain_core.runnables import RunnableConfig
+from langgraph.types import Command
+from src.graph import axiomcart_graph
+cfg: RunnableConfig = {'configurable': {'thread_id': 'test-006'}}
+r = axiomcart_graph.invoke(
+    {'messages': [HumanMessage(content='where is my order?')],
+     'user_query': 'Where is my order'}, cfg)
+if '__interrupt__' in r and r['__interrupt__']:
+    print('Agent asks:', r['__interrupt__'][0].value)
+    r = axiomcart_graph.invoke(Command(resume='ORD102'), cfg)
+    print(r['final_answer'])
 sys.exit()
+
+
+# Stage 8
+# python -m src.main # text REPL
+# python -m src.main --voice # voice mode

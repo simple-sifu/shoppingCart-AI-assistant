@@ -14,6 +14,7 @@ user answers on the next).
 
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import END, START, StateGraph
+from langgraph.graph.state import CompiledStateGraph
 
 from src.config import get_logger
 from src.nodes import orchestrator_node, product_agent, support_agent, synthesizer_node
@@ -22,7 +23,7 @@ from src.state import AxiomCartState
 logger = get_logger("graph")
 
 
-def build_graph() -> StateGraph:
+def build_graph() -> CompiledStateGraph:
     """Create, wire, and compile the AxiomCart multi-agent graph."""
 
     builder = StateGraph(AxiomCartState)
