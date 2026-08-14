@@ -1,18 +1,18 @@
 import sys
 
-# # Stage 1: Foundation
+# Stage 1: Foundation
 # from src.config import llm
 # print(llm.invoke("Hello, how are you?").content)
 # sys.exit()
 
 
-# # Stage 2
-# from src.tools import search_product_catalog
-# print(search_product_catalog.invoke({"query": "wireless head phones"}))
-# sys.exit()
+# # Stage 2 - RAG - Product Search Tool
+from src.tools import search_product_catalog
+print(search_product_catalog.invoke({"query": "wireless head phones"}))
+sys.exit()
 
 
-# # Stage 3
+# # Stage 3 - Product Agent Subgraph
 # from langchain_core.messages import HumanMessage, SystemMessage
 # from src.nodes import product_subgraph, PRODUCT_PROMPT
 # result = product_subgraph.invoke({'messages': [
@@ -22,7 +22,7 @@ import sys
 # sys.exit()
 
 
-# Stage 4
+# Stage 4 - Support Agent + Tools
 # from langchain_core.messages import HumanMessage, SystemMessage
 # from src.nodes import support_subgraph, SUPPORT_PROMPT
 # result = support_subgraph.invoke({'messages': [
@@ -32,7 +32,7 @@ import sys
 # sys.exit()
 
 
-# Stage 5
+# Stage 5 - Orchestrator + Multi-Agent Routing
 # from src.config import llm
 # from src.state import ClassificationResult
 # c = llm.with_structured_output(ClassificationResult)
@@ -41,7 +41,7 @@ import sys
 # sys.exit()
 
 
-# # Stage 6
+# # Stage 6 - Synthesizer + full Graph
 # from langchain_core.messages import HumanMessage
 # from src.graph import axiomcart_graph
 # result = axiomcart_graph.invoke(
@@ -52,20 +52,27 @@ import sys
 # sys.exit()
 
 
-# Stage 7
-from langchain_core.messages import HumanMessage
-from langchain_core.runnables import RunnableConfig
-from langgraph.types import Command
-from src.graph import axiomcart_graph
-cfg: RunnableConfig = {'configurable': {'thread_id': 'test-006'}}
-r = axiomcart_graph.invoke(
-    {'messages': [HumanMessage(content='where is my order?')],
-     'user_query': 'Where is my order'}, cfg)
-if '__interrupt__' in r and r['__interrupt__']:
-    print('Agent asks:', r['__interrupt__'][0].value)
-    r = axiomcart_graph.invoke(Command(resume='ORD102'), cfg)
-    print(r['final_answer'])
-sys.exit()
+# # Stage 7 - Human in the Loop (HITL) 
+# from langchain_core.messages import HumanMessage
+# from langchain_core.runnables import RunnableConfig
+# from langgraph.types import Command
+# from src.graph import axiomcart_graph
+# cfg: RunnableConfig = {'configurable': {'thread_id': 'test-hitl'}}
+# r = axiomcart_graph.invoke(
+#     {'messages': [HumanMessage(content='where is my order?')],
+#      'user_query': 'Where is my order'}, cfg)
+
+# print("="*50)
+# if '__interrupt__' in r and r['__interrupt__']:
+#     print('Agent asks:', r['__interrupt__'][0].value)
+#     r = axiomcart_graph.invoke(Command(resume='ORD102'), cfg)
+#     print(r['final_answer'])
+
+# print("="*50)
+# state = axiomcart_graph.get_state(cfg)
+# for m in state.values["messages"]:
+#     print(type(m).__name__, m.content)
+# sys.exit()
 
 
 # Stage 8
