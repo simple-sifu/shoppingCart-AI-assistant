@@ -6,10 +6,10 @@ import sys
 # sys.exit()
 
 
-# # Stage 2 - RAG - Product Search Tool
-from src.tools import search_product_catalog
-print(search_product_catalog.invoke({"query": "wireless head phones"}))
-sys.exit()
+# Stage 2 - RAG - Product Search Tool
+# from src.tools import search_product_catalog
+# print(search_product_catalog.invoke({"query": "wireless head phones"}))
+# sys.exit()
 
 
 # # Stage 3 - Product Agent Subgraph

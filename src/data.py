@@ -6,6 +6,11 @@ they are plain Python structures so you can see everything at a glance.
 """
 
 from __future__ import annotations
+from src.config import get_logger
+
+logger = get_logger("data")
+
+logger.info("PRODUCT_CATALOG & ORDER_DATABASE loaded")
 
 # ── Product Catalog (used by RAG) ───────────────────────────
 PRODUCT_CATALOG: list[dict] = [
