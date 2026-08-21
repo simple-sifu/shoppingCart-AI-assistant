@@ -12,7 +12,7 @@ import sys
 # sys.exit()
 
 
-# # Stage 3 - Product Agent Subgraph
+# Stage 3 - Product Agent Subgraph
 # from langchain_core.messages import HumanMessage, SystemMessage
 # from src.nodes import product_subgraph, PRODUCT_PROMPT
 # result = product_subgraph.invoke({'messages': [
@@ -37,11 +37,12 @@ import sys
 # from src.state import ClassificationResult
 # c = llm.with_structured_output(ClassificationResult)
 # r = c.invoke('Classify: My order ORD102 is late show me alternatives')
+# print(r)
 # print('Mixed:', [t.agent for t in r.tasks], 'synthesis:', r.requires_synthesis)
 # sys.exit()
 
 
-# # Stage 6 - Synthesizer + full Graph
+# Stage 6 - Synthesizer + full Graph
 # from langchain_core.messages import HumanMessage
 # from src.graph import axiomcart_graph
 # result = axiomcart_graph.invoke(
@@ -51,8 +52,7 @@ import sys
 # print(result['final_answer'])
 # sys.exit()
 
-
-# # Stage 7 - Human in the Loop (HITL) 
+# Stage 7 - Human in the Loop (HITL) 
 # from langchain_core.messages import HumanMessage
 # from langchain_core.runnables import RunnableConfig
 # from langgraph.types import Command
@@ -61,18 +61,12 @@ import sys
 # r = axiomcart_graph.invoke(
 #     {'messages': [HumanMessage(content='where is my order?')],
 #      'user_query': 'Where is my order'}, cfg)
-
-# print("="*50)
-# if '__interrupt__' in r and r['__interrupt__']:
-#     print('Agent asks:', r['__interrupt__'][0].value)
-#     r = axiomcart_graph.invoke(Command(resume='ORD102'), cfg)
-#     print(r['final_answer'])
-
-# print("="*50)
-# state = axiomcart_graph.get_state(cfg)
-# for m in state.values["messages"]:
-#     print(type(m).__name__, m.content)
+# while '__interrupt__' in r and r['__interrupt__']:
+#     answer = input(f"Agent asks: {r['__interrupt__'][0].value}\nYou: ").strip()
+#     r = axiomcart_graph.invoke(Command(resume=answer), cfg)
+# print(r['final_answer'])
 # sys.exit()
+
 
 
 # Stage 8

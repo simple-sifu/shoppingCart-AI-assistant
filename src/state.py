@@ -11,10 +11,14 @@ from __future__ import annotations
 
 import operator
 from typing import Annotated, List, Literal, TypedDict
+from src.config import get_logger
 
 from langchain_core.messages import AnyMessage
 from pydantic import BaseModel, Field
 
+
+logger = get_logger("state")
+logger.info("State module loaded")
 
 def agent_results_reducer(current: list[dict], update: list[dict]) -> list[dict]:
     """Like operator.add, but an empty list signals a reset."""

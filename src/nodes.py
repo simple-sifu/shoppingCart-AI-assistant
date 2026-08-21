@@ -114,7 +114,9 @@ def should_continue(state: AgentState) -> str:
     """Route after model node: tool_calls → tools, otherwise → END."""
     last = state["messages"][-1]
     if hasattr(last, "tool_calls") and last.tool_calls:
+        print("should_continue: TOOLS")
         return "tools"
+    print("should_continue: END")
     return END
 
 
@@ -186,9 +188,12 @@ def support_should_continue(state: AgentState) -> str:
     HumanMessage (user answered via HITL interrupt), loop back to model."""
     last = state["messages"][-1]
     if isinstance(last, HumanMessage):
+        print("should_continue: MODEL")
         return "model"
     if hasattr(last, "tool_calls") and last.tool_calls:
+        print("should_continue: TOOLS")
         return "tools"
+    print("should_continue: END")
     return END
 
 
